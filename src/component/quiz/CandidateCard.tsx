@@ -1,5 +1,6 @@
-import { Box } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { candidatesById } from "../../data";
+import CandidateImage from "./CandidateImage";
 
 interface Props {
   candidateId: string
@@ -7,27 +8,41 @@ interface Props {
 }
 
 const CandidateCard = (props: Props) => {
-  const { name } = candidatesById[props.candidateId];
+  const { name, image } = candidatesById[props.candidateId];
   return (
-    <Box
+    <Container
+      disableGutters
       sx={{
-        width: 400,
-        height: 300,
+        width: '100%',
+        height: '250px',
         bgcolor: 'white',
         color: 'black',
         border: '1px solid',
-        p: 1,
+        padding: '16px 8px 8px 8px',
         borderRadius: 2,
         fontSize: 36,
         alignItems: 'center',
         justifyContent: 'center',
-        display: 'flex',
         '&:hover': {
           bgcolor: '#EEEEEE',
         },
       }}
       onClick={props.onClick}
-    >{name}</Box>
+    >
+      <Stack>
+        <CandidateImage image={image} />
+        <Stack
+          justifyContent="center"
+          sx={{
+            textAlign: 'center',
+            fontSize: 16,
+            height: '100px',
+          }}
+        >
+        <p>{name}</p>
+        </Stack>
+      </Stack>
+    </Container>
   )
 };
 

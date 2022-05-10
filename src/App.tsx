@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { Component, useEffect, useState } from 'react';
 import { State } from './lib';
-import { candidateIds } from './data';
+import { candidateIds, candidates } from './data';
 import Quiz from './component/quiz';
 import Result from './component/result';
 
@@ -10,10 +10,19 @@ const App = () => {
   const pushResponse = (response: boolean) => {
     const stateNext = state.pushResponse(response);
     setState(stateNext);
-    console.log(stateNext.graph);
     const pairNext = stateNext.getNextPair();
     setPair(pairNext);
+    console.log(stateNext.step);
   }
+  useEffect(() => {
+    candidates.forEach(({ image }) => {
+      const images = typeof image === 'string' ? [image] : image ? image : [];
+      for (const i of images) {
+        const img = new Image();
+        img.src = i;
+      }
+    });
+  });
   return pair ?
     <Quiz
       leftId={pair[0]}

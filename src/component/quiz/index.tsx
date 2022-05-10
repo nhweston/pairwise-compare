@@ -1,4 +1,4 @@
-import { Box, Container } from '@mui/material';
+import { Box, Container, Grid, Stack } from '@mui/material';
 import CandidateCard from './CandidateCard';
 
 interface Props {
@@ -12,40 +12,32 @@ interface Props {
 
 const Quiz = (props: Props) => {
   return (
-    <Container
+    <Stack
       sx={{
+        padding: '8px',
         minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: 'calc(10px + 2vmin)'
       }}
     >
-      <Box component="p">
-        Which do you prefer? ({props.numPairsKnown} / {props.numPairsTotal})
+      <Box component="p" sx={{ fontSize: 'calc(6vmin)' }}>
+        Which do you prefer?
       </Box>
-      <Box component="p">
-        Estimated questions remaining: {props.estimatedNumQuestionsRemaining}
-      </Box>
-      <Box
-        sx={{
-          display: 'grid',
-          columnGap: 3,
-          rowGap: 1,
-          gridTemplateColumns: 'repeat(2, 1fr)',
-        }}
-      >
-        <CandidateCard
-          candidateId={props.leftId}
-          onClick={() => props.pushResponse(true)}
-        />
-        <CandidateCard
-          candidateId={props.rightId}
-          onClick={() => props.pushResponse(false)}
-        />
-      </Box>
-    </Container>
+      <Grid container spacing={2} maxWidth="600px">
+        <Grid item xs={6}>
+          <CandidateCard
+            candidateId={props.leftId}
+            onClick={() => props.pushResponse(true)}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <CandidateCard
+            candidateId={props.rightId}
+            onClick={() => props.pushResponse(false)}
+          />
+        </Grid>
+      </Grid>
+    </Stack>
   )
 };
 

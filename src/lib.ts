@@ -1,6 +1,6 @@
 export interface Candidate {
   name: string
-  image?: string
+  image: string
   website?: string
 }
 
