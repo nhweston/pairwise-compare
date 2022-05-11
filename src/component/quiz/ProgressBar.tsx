@@ -13,20 +13,21 @@ const ProgressBar = (props: Props) => {
         width: '100%',
         border: '1px solid',
         borderRadius: 50,
-        margin: 50,
+        margin: 0,
       }}
     >
       <div
         style={{
           height: '100%',
           width: `${progress * 100}%`,
-          backgroundColor: '#ccffcc',
+          backgroundColor: '#dddddd',
           borderRadius: 'inherit',
-          textAlign: 'right'
+          textAlign: 'right',
         }}
       >
         <span
           style={{
+            boxSizing: 'border-box',
             padding: 5,
             fontWeight: 'bold',
           }}

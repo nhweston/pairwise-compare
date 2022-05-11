@@ -1,25 +1,15 @@
 import { Box, Container, Stack } from "@mui/material";
-import { candidatesById } from "../../data";
+import { candidatesById, CandidateId } from "../../data";
 import CandidateImage from "./CandidateImage";
+import CandidateLink from "./CandidateLink";
 
 interface Props {
-  candidateId: string
+  candidateId: CandidateId
   onClick: () => void
 }
 
 const CandidateCard = (props: Props) => {
   const { name, image, website } = candidatesById[props.candidateId];
-  const links =
-    typeof website === 'string' ?
-    <p style={{ textAlign: 'center' }}><a href={website} target="_blank">View policies</a></p> : (
-      <p style={{ textAlign: 'center' }}>View policies: {
-        website.flatMap(([name, url], i) =>
-          i === website.length - 1 ?
-            [<a href={url} target="_blank">{name}</a>] :
-            [<a href={url} target="_blank">{name}</a>, <span> | </span>]
-        )
-      }</p>
-    );
   return (
     <>
       <Container
@@ -52,7 +42,7 @@ const CandidateCard = (props: Props) => {
           </Stack>
         </Stack>
       </Container>
-      {links}
+      <CandidateLink website={website} />
     </>
   )
 };

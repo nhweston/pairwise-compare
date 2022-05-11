@@ -1,7 +1,7 @@
-import { Box, Container, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 
 interface Props {
-  image: string
+  image: string | null
 }
 
 const CandidateImage = (props: Props) => {
@@ -13,15 +13,16 @@ const CandidateImage = (props: Props) => {
         width: '100%',
         height: '150px',
       }}
-    >
-      <img
-        src={image}
-        style={{
-          objectFit: 'contain',
-          maxHeight: '150px',
-        }}
-      />
-    </Stack>
+    >{
+      image &&
+        <img
+          src={image}
+          style={{
+            objectFit: 'contain',
+            maxHeight: '150px',
+          }}
+        />
+    }</Stack>
   );
 };
 

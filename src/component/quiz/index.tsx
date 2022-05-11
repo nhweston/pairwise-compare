@@ -1,16 +1,17 @@
 import { Box, Container, Grid, Stack } from '@mui/material';
+import { CandidateId } from '../../data';
 import BackButton from './BackButton';
 import CandidateCard from './CandidateCard';
 import ProgressBar from './ProgressBar';
 
 interface Props {
-  leftId: string
-  rightId: string
+  leftId: CandidateId
+  rightId: CandidateId
   numPairsKnown: number
   numPairsTotal: number
   estimatedNumQuestionsRemaining: number
   pushResponse: (response: boolean) => void
-  back?: () => void
+  back: () => void
 }
 
 const Quiz = (props: Props) => {

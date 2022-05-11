@@ -1,13 +1,13 @@
-import { State } from "./lib";
+import { QuizState } from "./lib";
 
 const s2 = () => {
   const candidates = ['A', 'B'];
-  return State.create(candidates);
+  return QuizState.create(candidates);
 };
 
 const s3 = () => {
   const candidates = ['A', 'B', 'C'];
-  return State.create(candidates);
+  return QuizState.create(candidates);
 };
 
 test('initialisation: step', () => {

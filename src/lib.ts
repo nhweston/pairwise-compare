@@ -1,12 +1,6 @@
-export interface Candidate {
-  name: string
-  image: string
-  website: string | [string, string][]
-}
+export class QuizState {
 
-export class State {
-
-  readonly previous: State | null;
+  readonly previous: QuizState | null;
 
   readonly step: number;
 
@@ -25,11 +19,11 @@ export class State {
   readonly table: { [a: string]: { [b: string]: boolean | null } };
 
   private constructor(
-    previous: State | null,
+    previous: QuizState | null,
     candidates: string[],
     remaining: [string, string][],
-    graph: State['graph'],
-    table: State['table'],
+    graph: QuizState['graph'],
+    table: QuizState['table'],
   ) {
     this.previous = previous;
     this.step = previous ? previous.step + 1 : 1;
@@ -39,7 +33,7 @@ export class State {
     this.table = table;
   }
 
-  static create(candidates: string[]): State {
+  static create(candidates: string[]): QuizState {
     const pairs: [string, string][] = [];
     for (let i = 0; i < candidates.length; i++) {
       for (let j = i + 1; j < candidates.length; j++) {
@@ -60,8 +54,8 @@ export class State {
       }
       return candidateWeights[a1] - candidateWeights[a0];
     });
-    const graph: State['graph'] = { };
-    const table: State['table'] = { };
+    const graph: QuizState['graph'] = { };
+    const table: QuizState['table'] = { };
     for (const a of candidates) {
       graph[a] = new Set();
       const row: (typeof table)[string] = { };
@@ -70,7 +64,7 @@ export class State {
         row[b] = null;
       }
     }
-    return new State(null, candidates, pairs, graph, table);
+    return new QuizState(null, candidates, pairs, graph, table);
   }
 
   getEstimatedNumQuestionsRemaining(): number {
@@ -135,7 +129,7 @@ export class State {
   }
 
   // response === a > b where getNextPair() === [a, b]
-  pushResponse(response: boolean): State {
+  pushResponse(response: boolean): QuizState {
     const { candidates, remaining, graph, table } = this;
     const pair = this.getNextPair();
     if (!pair) {
@@ -177,7 +171,7 @@ export class State {
       }
       remainingNext.pop();
     }
-    return new State(
+    return new QuizState(
       this,
       candidates,
       remainingNext,

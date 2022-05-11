@@ -1,23 +1,40 @@
 import { Component, useEffect, useState } from 'react';
-import { State } from './lib';
-import { candidateIds, candidates } from './data';
+import { QuizState } from './lib';
+import { AustralianState, ballots, CandidateId, candidates, getCandidateList } from './data';
 import Quiz from './component/quiz';
 import Result from './component/result';
+import Start from './component/start';
 
 const App = () => {
-  const [state, setState] = useState(State.create(candidateIds));
-  const [pair, setPair] = useState(state.getNextPair());
+  const [ausState, setAusState] = useState<AustralianState | null>(null);
+  const [quizState, setQuizState] = useState<QuizState | null>(null);
+  const [pair, setPair] = useState<[CandidateId, CandidateId] | null>(null);
   const pushResponse = (response: boolean) => {
-    const stateNext = state.pushResponse(response);
-    setState(stateNext);
-    const pairNext = stateNext.getNextPair();
+    const stateNext = quizState!.pushResponse(response);
+    setQuizState(stateNext);
+    const pairNext = stateNext.getNextPair() as [CandidateId, CandidateId];
     setPair(pairNext);
   }
   const back = () => {
-    const statePrev = state.previous!;
-    setState(statePrev);
-    setPair(statePrev.getNextPair());
+    if (!quizState) {
+      return;
+    }
+    const statePrev = quizState.previous;
+    setQuizState(statePrev);
+    if (!statePrev) {
+      setPair(null);
+      setAusState(null);
+      return;
+    }
+    setPair(statePrev.getNextPair() as [CandidateId, CandidateId]);
   };
+  const selectState = (state: AustralianState) => {
+    setAusState(state);
+    const newQuizState = QuizState.create(getCandidateList(state));
+    setQuizState(newQuizState);
+    setPair(newQuizState.getNextPair()! as [CandidateId, CandidateId]);
+  }
+  // preload images
   useEffect(() => {
     candidates.forEach(({ image }) => {
       const images = typeof image === 'string' ? [image] : image ? image : [];
@@ -27,20 +44,29 @@ const App = () => {
       }
     });
   });
-  return pair ?
-    <Quiz
-      leftId={pair[0]}
-      rightId={pair[1]}
-      numPairsKnown={state.getNumPairsKnown()}
-      numPairsTotal={state.getNumPairsTotal()}
-      estimatedNumQuestionsRemaining={state.getEstimatedNumQuestionsRemaining()}
-      pushResponse={pushResponse}
-      back={state.previous ? back : undefined}
-    /> :
-    <Result
-      candidateIds={state.getResult()}
-      back={back}
-    />
+  if (quizState && pair) {
+    return (
+      <Quiz
+        leftId={pair[0]}
+        rightId={pair[1]}
+        numPairsKnown={quizState.getNumPairsKnown()}
+        numPairsTotal={quizState.getNumPairsTotal()}
+        estimatedNumQuestionsRemaining={quizState.getEstimatedNumQuestionsRemaining()}
+        pushResponse={pushResponse}
+        back={back}
+      />
+    );
+  }
+  if (quizState) {
+    return (
+      <Result
+        ballot={ballots[ausState!]}
+        candidateIds={quizState.getResult() as [CandidateId, CandidateId]}
+        back={back}
+      />
+    );
+  }
+  return <Start selectState={selectState} />
 }
 
 export default App;
