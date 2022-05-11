@@ -22,7 +22,7 @@ const Result = (props: Props) => {
       </Box>
       <Box component="ol">{
         props.candidateIds.map(c => (
-          <Box key={c}>{candidatesById[c].name}</Box>
+          <Box component="li" key={c}>{candidatesById[c].name}</Box>
         ))
       }</Box>
     </Container>
