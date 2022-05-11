@@ -1,10 +1,12 @@
 export interface Candidate {
   name: string
   image: string
-  website?: string
+  website: string | [string, string][]
 }
 
 export class State {
+
+  readonly previous: State | null;
 
   readonly step: number;
 
@@ -23,13 +25,14 @@ export class State {
   readonly table: { [a: string]: { [b: string]: boolean | null } };
 
   private constructor(
-    step: number,
+    previous: State | null,
     candidates: string[],
     remaining: [string, string][],
     graph: State['graph'],
     table: State['table'],
   ) {
-    this.step = step;
+    this.previous = previous;
+    this.step = previous ? previous.step + 1 : 1;
     this.candidates = candidates;
     this.remaining = remaining;
     this.graph = graph;
@@ -67,7 +70,7 @@ export class State {
         row[b] = null;
       }
     }
-    return new State(1, candidates, pairs, graph, table);
+    return new State(null, candidates, pairs, graph, table);
   }
 
   getEstimatedNumQuestionsRemaining(): number {
@@ -175,7 +178,7 @@ export class State {
       remainingNext.pop();
     }
     return new State(
-      this.step + 1,
+      this,
       candidates,
       remainingNext,
       graphNext,

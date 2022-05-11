@@ -1,13 +1,15 @@
-import { Box, Container } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { candidatesById } from "../../data";
+import BackButton from "../quiz/BackButton";
 
 interface Props {
   candidateIds: string[]
+  back: () => void
 }
 
 const Result = (props: Props) => {
   return (
-    <Container
+    <Stack
       sx={{
         minHeight: '100vh',
         display: 'flex',
@@ -25,7 +27,8 @@ const Result = (props: Props) => {
           <Box component="li" key={c}>{candidatesById[c].name}</Box>
         ))
       }</Box>
-    </Container>
+      <BackButton onClick={props.back} />
+    </Stack>
   )
 };
 

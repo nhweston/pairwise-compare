@@ -12,8 +12,12 @@ const App = () => {
     setState(stateNext);
     const pairNext = stateNext.getNextPair();
     setPair(pairNext);
-    console.log(stateNext.step);
   }
+  const back = () => {
+    const statePrev = state.previous!;
+    setState(statePrev);
+    setPair(statePrev.getNextPair());
+  };
   useEffect(() => {
     candidates.forEach(({ image }) => {
       const images = typeof image === 'string' ? [image] : image ? image : [];
@@ -31,9 +35,11 @@ const App = () => {
       numPairsTotal={state.getNumPairsTotal()}
       estimatedNumQuestionsRemaining={state.getEstimatedNumQuestionsRemaining()}
       pushResponse={pushResponse}
+      back={state.previous ? back : undefined}
     /> :
     <Result
       candidateIds={state.getResult()}
+      back={back}
     />
 }
 

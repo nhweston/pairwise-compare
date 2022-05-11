@@ -1,4 +1,5 @@
 import { Box, Container, Grid, Stack } from '@mui/material';
+import BackButton from './BackButton';
 import CandidateCard from './CandidateCard';
 import ProgressBar from './ProgressBar';
 
@@ -9,6 +10,7 @@ interface Props {
   numPairsTotal: number
   estimatedNumQuestionsRemaining: number
   pushResponse: (response: boolean) => void
+  back?: () => void
 }
 
 const Quiz = (props: Props) => {
@@ -39,6 +41,7 @@ const Quiz = (props: Props) => {
           />
         </Grid>
       </Grid>
+      <BackButton onClick={props.back} />
     </Stack>
   )
 };

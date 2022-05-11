@@ -9,7 +9,8 @@ const ProgressBar = (props: Props) => {
     <div
       style={{
         height: 20,
-        width: '400px',
+        maxWidth: '400px',
+        width: '100%',
         border: '1px solid',
         borderRadius: 50,
         margin: 50,
