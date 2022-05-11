@@ -1,5 +1,6 @@
 import { Box, Container, Grid, Stack } from '@mui/material';
 import CandidateCard from './CandidateCard';
+import ProgressBar from './ProgressBar';
 
 interface Props {
   leftId: string
@@ -20,6 +21,7 @@ const Quiz = (props: Props) => {
         justifyContent: 'center',
       }}
     >
+      <ProgressBar progress={props.numPairsKnown / props.numPairsTotal} />
       <Box component="p" sx={{ fontSize: 'calc(6vmin)' }}>
         Which do you prefer?
       </Box>
