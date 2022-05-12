@@ -1,4 +1,4 @@
-import { Component, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { QuizState } from './lib';
 import { AustralianState, ballots, CandidateId, candidates, getCandidateList } from './data';
 import Quiz from './component/quiz';
@@ -47,11 +47,11 @@ const App = () => {
   if (quizState && pair) {
     return (
       <Quiz
+        swap={quizState.step % 2 === 0}
         leftId={pair[0]}
         rightId={pair[1]}
         numPairsKnown={quizState.getNumPairsKnown()}
         numPairsTotal={quizState.getNumPairsTotal()}
-        estimatedNumQuestionsRemaining={quizState.getEstimatedNumQuestionsRemaining()}
         pushResponse={pushResponse}
         back={back}
       />

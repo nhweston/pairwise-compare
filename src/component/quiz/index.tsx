@@ -1,15 +1,15 @@
-import { Box, Container, Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { CandidateId } from '../../data';
 import BackButton from './BackButton';
 import CandidateCard from './CandidateCard';
 import ProgressBar from './ProgressBar';
 
 interface Props {
+  swap: boolean
   leftId: CandidateId
   rightId: CandidateId
   numPairsKnown: number
   numPairsTotal: number
-  estimatedNumQuestionsRemaining: number
   pushResponse: (response: boolean) => void
   back: () => void
 }
@@ -31,14 +31,14 @@ const Quiz = (props: Props) => {
       <Grid container spacing={2} maxWidth="600px">
         <Grid item xs={6}>
           <CandidateCard
-            candidateId={props.leftId}
-            onClick={() => props.pushResponse(true)}
+            candidateId={props.swap ? props.rightId : props.leftId}
+            onClick={() => props.pushResponse(!props.swap)}
           />
         </Grid>
         <Grid item xs={6}>
           <CandidateCard
-            candidateId={props.rightId}
-            onClick={() => props.pushResponse(false)}
+            candidateId={props.swap ? props.leftId : props.rightId}
+            onClick={() => props.pushResponse(props.swap)}
           />
         </Grid>
       </Grid>
